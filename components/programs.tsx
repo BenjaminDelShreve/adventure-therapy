@@ -7,6 +7,8 @@ const programs = [
   {
     name: "HEROES",
     duration: "Veterans & First Responders",
+    image: "/images/heroes (1).JPG",
+    imageAlt: "Heroes program participants",
     description:
       "We empower Veterans and First Responders by providing outdoor adventures and group activities in nature that promote healing, resilience, and camaraderie. Through challenging and restorative experiences in the great outdoors, we foster mental and physical well-being, strengthen community connections, and support the transition to a healthier, purpose-driven life. We are committed to honoring those who have served by offering a space for growth, adventure, and renewal.",
     features: [
@@ -24,6 +26,8 @@ const programs = [
   {
     name: "RECOVERY",
     duration: "Substance Abuse Recovery",
+    image: "/recovery.png",
+    imageAlt: "Recovery program participants",
     description:
       "Nature and adventure play a crucial role in helping recovering addicts by providing a healing environment. Immersing oneself in nature reduces stress, anxiety, and depression, which are common triggers for relapse. Outdoor activities like hiking, kayaking, or rock climbing offer a healthy way to channel energy, build resilience, and develop a sense of accomplishment.",
     features: [
@@ -37,6 +41,8 @@ const programs = [
   {
     name: "COUPLES",
     duration: "Relationship Enhancement",
+    image: "/images/couples.JPG",
+    imageAlt: "Couples program participants",
     description:
       "Adventure is great for couples because it strengthens their bond through shared experiences, excitement, and teamwork. Trying new activities together—whether hiking, traveling, or skydiving—creates lasting memories, deepens trust, and reignites passion. Stepping out of the comfort zone fosters communication and connection, helping couples grow both individually and as a team. Plus, the thrill of adventure boosts happiness, making relationships more vibrant and fulfilling.",
     features: [
@@ -61,69 +67,51 @@ export function Programs() {
             support and carefully designed outdoor experiences.
           </p>
         </div>
-        <div className="mt-12 mb-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="overflow-hidden rounded-lg">
-            <Image
-              src="/images/heroes (1).JPG"
-              alt="Heroes program participants"
-              width={1200}
-              height={675}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="overflow-hidden rounded-lg">
-            <Image
-              src="/recovery.png"
-              alt="Recovery program participants"
-              width={1200}
-              height={675}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="overflow-hidden rounded-lg">
-            <Image
-              src="/images/couples.JPG"
-              alt="Couples program participants"
-              width={1200}
-              height={675}
-              className="h-full w-full object-cover"
-            />
-          </div>
-        </div>
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="mt-12 grid gap-8 lg:grid-cols-3">
           {programs.map((program) => (
-            <Card key={program.name} className="flex flex-col border-border bg-card p-8">
-              <div className="flex-1">
-                <div className="text-sm font-semibold uppercase tracking-wide text-at-light-green">
-                  {program.duration}
-                </div>
-                <h3 className="mt-2 text-2xl font-bold text-at-dark-green">{program.name}</h3>
-                <p className="mt-4 leading-relaxed text-foreground/80">{program.description}</p>
-                {program.featuresTitle && (
-                  <h4 className="mt-6 font-bold text-at-dark-green">{program.featuresTitle}</h4>
-                )}
-                <ul className="mt-6 space-y-3">
-                  {program.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <svg
-                        className="h-5 w-5 shrink-0 text-at-orange"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-sm leading-relaxed text-foreground/80">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+            <div key={program.name} className="flex flex-col">
+              <div className="mb-4 overflow-hidden rounded-lg">
+                <Image
+                  src={program.image}
+                  alt={program.imageAlt}
+                  width={1200}
+                  height={675}
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <Link href="/apply" className="block mt-8">
-                <Button className="w-full bg-at-orange text-at-dark-green hover:bg-at-orange/90 shadow-lg border-2 border-at-orange font-semibold">
-                  Apply
-                </Button>
-              </Link>
-            </Card>
+              <Card className="flex flex-col border-border bg-card p-8">
+                <div className="flex-1">
+                  <div className="text-sm font-semibold uppercase tracking-wide text-at-light-green">
+                    {program.duration}
+                  </div>
+                  <h3 className="mt-2 text-2xl font-bold text-at-dark-green">{program.name}</h3>
+                  <p className="mt-4 leading-relaxed text-foreground/80">{program.description}</p>
+                  {program.featuresTitle && (
+                    <h4 className="mt-6 font-bold text-at-dark-green">{program.featuresTitle}</h4>
+                  )}
+                  <ul className="mt-6 space-y-3">
+                    {program.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <svg
+                          className="h-5 w-5 shrink-0 text-at-orange"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-sm leading-relaxed text-foreground/80">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Link href="/apply" className="block mt-8">
+                  <Button className="w-full bg-at-orange text-at-dark-green hover:bg-at-orange/90 shadow-lg border-2 border-at-orange font-semibold">
+                    Apply
+                  </Button>
+                </Link>
+              </Card>
+            </div>
           ))}
         </div>
       </div>
