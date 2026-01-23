@@ -70,16 +70,16 @@ export function Programs() {
         <div className="mt-12 grid gap-8 lg:grid-cols-3">
           {programs.map((program) => (
             <div key={program.name} className="flex flex-col">
-              <div className="mb-4 overflow-hidden rounded-lg">
+              <div className="mb-4 overflow-hidden rounded-lg lg:aspect-[4/3]">
                 <Image
                   src={program.image}
                   alt={program.imageAlt}
                   width={1200}
-                  height={675}
+                  height={900}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <Card className="flex flex-col border-border bg-card p-8">
+              <Card className="flex flex-1 flex-col border-border bg-card p-8">
                 <div className="flex-1">
                   <div className="text-sm font-semibold uppercase tracking-wide text-at-light-green">
                     {program.duration}
@@ -105,7 +105,7 @@ export function Programs() {
                     ))}
                   </ul>
                 </div>
-                <Link href="/apply" className="block mt-8">
+                <Link href="/apply" className="mt-8 block">
                   <Button className="w-full bg-at-orange text-at-dark-green hover:bg-at-orange/90 shadow-lg border-2 border-at-orange font-semibold">
                     Apply
                   </Button>
