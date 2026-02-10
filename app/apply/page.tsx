@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -72,147 +72,11 @@ export default function ApplyPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [useDateOfBirth, setUseDateOfBirth] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [successMessage, setSuccessMessage] = useState("")
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    // Validation
-    const newErrors: Record<string, string> = {}
-
-    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required"
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address"
-    }
-    if (!formData.programCategory) {
-      newErrors.programCategory = "Please select a program category"
-    }
-    if (formData.programCategory === "couples") {
-      if (!formData.partnerName.trim()) newErrors.partnerName = "Partner name is required"
-      if (!formData.partnerEmail.trim()) {
-        newErrors.partnerEmail = "Partner email is required"
-      } else if (!validateEmail(formData.partnerEmail)) {
-        newErrors.partnerEmail = "Please enter a valid email address"
-      }
-    }
-    if (!formData.whatDrewYou.trim()) newErrors.whatDrewYou = "This field is required"
-    if (!formData.hopingToGain.trim()) newErrors.hopingToGain = "This field is required"
-    if (!formData.physicalActivity) newErrors.physicalActivity = "This field is required"
-    if (!formData.emotionalReadiness) newErrors.emotionalReadiness = "This field is required"
-    if (!formData.ableToCommit) newErrors.ableToCommit = "This field is required"
-    if (!formData.financialAssistance) newErrors.financialAssistance = "This field is required"
-    if (!formData.alignedWithValues) newErrors.alignedWithValues = "This field is required"
-    if (!formData.notGuarantee) newErrors.notGuarantee = "This consent is required"
-    if (!formData.additionalScreening) newErrors.additionalScreening = "This consent is required"
-    if (!formData.informationAccurate) newErrors.informationAccurate = "This consent is required"
-
-    // Category-specific validation
-    if (formData.programCategory === "veterans") {
-      if (formData.serviceBackground.length === 0) {
-        newErrors.serviceBackground = "Please select at least one service background"
-      }
-    }
-    if (formData.programCategory === "recovery") {
-      if (!formData.inRecovery) newErrors.inRecovery = "This field is required"
-      if (!formData.recoveryLength) newErrors.recoveryLength = "This field is required"
-    }
-    if (formData.programCategory === "couples") {
-      if (!formData.bothPartnersWilling) newErrors.bothPartnersWilling = "This field is required"
-    }
-
-    setErrors(newErrors)
-
-    if (Object.keys(newErrors).length > 0) {
-      return
-    }
-
-    // Submit to API
-    setIsSubmitting(true)
-    setSuccessMessage("")
-
-    try {
-      const response = await fetch("/api/apply", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-
-      const data = await response.json()
-
-      if (data.ok) {
-        setSuccessMessage(
-          "Thank you! Your application has been submitted successfully. We will review your application and get back to you soon."
-        )
-        // Clear any previous errors
-        setErrors({})
-        // Scroll to top to show success message
-        window.scrollTo({ top: 0, behavior: "smooth" })
-        // Reset form after successful submission
-        setFormData({
-          fullName: "",
-          preferredName: "",
-          email: "",
-          phone: "",
-          city: "",
-          state: "",
-          age: "",
-          dateOfBirth: "",
-          gender: "",
-          programCategory: "" as ProgramCategory,
-          partnerName: "",
-          partnerEmail: "",
-          branchOrRole: "",
-          whatDrewYou: "",
-          hopingToGain: "",
-          participatedBefore: "",
-          participatedDescription: "",
-          physicalActivity: "",
-          emotionalReadiness: "",
-          professionalSupports: "",
-          serviceBackground: [],
-          experiencingIsolation: "",
-          inRecovery: "",
-          recoveryLength: "",
-          recoverySupport: "",
-          togetherLength: "",
-          bothPartnersWilling: "",
-          couplesCounseling: "",
-          ableToCommit: "",
-          financialAssistance: "",
-          dietaryAccessibility: "",
-          alignedWithValues: "",
-          anythingElse: "",
-          notGuarantee: false,
-          additionalScreening: false,
-          informationAccurate: false,
-        })
-        setUseDateOfBirth(false)
-      } else {
-        // Form does NOT clear on error - keep user's data
-        const errorMessage = data.error || "Failed to submit application. Please try again."
-        setErrors({ submit: errorMessage })
-        // Scroll to top to show error message
-        window.scrollTo({ top: 0, behavior: "smooth" })
-      }
-    } catch (error) {
-      console.error("Error submitting application:", error)
-      // Form does NOT clear on error - keep user's data
-      setErrors({
-        submit: "An error occurred while submitting your application. Please check your connection and try again.",
-      })
-      // Scroll to top to show error message
-      window.scrollTo({ top: 0, behavior: "smooth" })
-    } finally {
-      setIsSubmitting(false)
-    }
   }
 
   const updateField = (field: string, value: string | boolean | string[]) => {
@@ -248,21 +112,16 @@ export default function ApplyPage() {
                 priority
               />
             </div>
-            <h1 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl text-center">
+            <h1 className="text-balance text-3xl font-bold tracking-tight text-at-blue sm:text-4xl lg:text-5xl text-center">
               Adventure Therapy Application
             </h1>
 
             {/* Success Message */}
-            {successMessage && (
+            {submitSuccess && (
               <div className="mt-8 rounded-lg border border-green-500 bg-green-50 dark:bg-green-950/20 p-6">
-                <p className="text-green-800 dark:text-green-200 font-medium">{successMessage}</p>
-              </div>
-            )}
-
-            {/* Error Message */}
-            {errors.submit && (
-              <div className="mt-8 rounded-lg border border-destructive bg-destructive/10 p-6">
-                <p className="text-destructive font-medium">{errors.submit}</p>
+                <p className="text-green-800 dark:text-green-200 font-medium">
+                  Application submitted successfully! We'll be in touch soon.
+                </p>
               </div>
             )}
 
@@ -284,10 +143,20 @@ export default function ApplyPage() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-12 space-y-12">
+            <form
+              ref={formRef}
+              action="https://formsubmit.co/zenjamindev@gmail.com"
+              method="POST"
+              noValidate
+              className="mt-12 space-y-12"
+            >
+              <input type="hidden" name="_subject" value="New Adventure Therapy Application" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value="https://adventure-therapy.vercel.app" />
               {/* SECTION 1: Basic Applicant Information */}
               <fieldset className="space-y-6">
-                <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">Section 1: Basic Applicant Information</legend>
+                <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 1: Basic Applicant Information</legend>
 
                 <div className="space-y-4">
                   <div>
@@ -296,6 +165,7 @@ export default function ApplyPage() {
                     </Label>
                     <Input
                       id="fullName"
+                      name="full_name"
                       type="text"
                       required
                       value={formData.fullName}
@@ -309,6 +179,7 @@ export default function ApplyPage() {
                     <Label htmlFor="preferredName">Preferred Name (optional)</Label>
                     <Input
                       id="preferredName"
+                      name="preferred_name"
                       type="text"
                       value={formData.preferredName}
                       onChange={(e) => updateField("preferredName", e.target.value)}
@@ -321,6 +192,7 @@ export default function ApplyPage() {
                     </Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       required
                       value={formData.email}
@@ -334,6 +206,7 @@ export default function ApplyPage() {
                     <Label htmlFor="phone">Phone Number</Label>
                     <Input
                       id="phone"
+                      name="phone"
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => updateField("phone", e.target.value)}
@@ -345,6 +218,7 @@ export default function ApplyPage() {
                       <Label htmlFor="city">City</Label>
                       <Input
                         id="city"
+                        name="city"
                         type="text"
                         value={formData.city}
                         onChange={(e) => updateField("city", e.target.value)}
@@ -354,6 +228,7 @@ export default function ApplyPage() {
                       <Label htmlFor="state">State</Label>
                       <Input
                         id="state"
+                        name="state"
                         type="text"
                         value={formData.state}
                         onChange={(e) => updateField("state", e.target.value)}
@@ -366,6 +241,7 @@ export default function ApplyPage() {
                       <Label htmlFor="useDateOfBirth" className="cursor-pointer">
                         <Checkbox
                           id="useDateOfBirth"
+                          name="use_date_of_birth"
                           checked={useDateOfBirth}
                           onCheckedChange={(checked) => setUseDateOfBirth(checked as boolean)}
                         />
@@ -377,6 +253,7 @@ export default function ApplyPage() {
                         <Label htmlFor="dateOfBirth">Date of Birth</Label>
                         <Input
                           id="dateOfBirth"
+                          name="date_of_birth"
                           type="date"
                           value={formData.dateOfBirth}
                           onChange={(e) => updateField("dateOfBirth", e.target.value)}
@@ -387,6 +264,7 @@ export default function ApplyPage() {
                         <Label htmlFor="age">Age</Label>
                         <Input
                           id="age"
+                          name="age"
                           type="number"
                           min="18"
                           value={formData.age}
@@ -398,7 +276,7 @@ export default function ApplyPage() {
 
                   <div>
                     <Label htmlFor="gender">Gender (optional)</Label>
-                    <Select value={formData.gender} onValueChange={(value) => updateField("gender", value)}>
+                    <Select value={formData.gender} onValueChange={(value) => updateField("gender", value)} name="gender">
                       <SelectTrigger id="gender" className="w-full">
                         <SelectValue placeholder="Select or prefer not to say" />
                       </SelectTrigger>
@@ -409,13 +287,14 @@ export default function ApplyPage() {
                         <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                       </SelectContent>
                     </Select>
+                    {formData.gender && <input type="hidden" name="gender" value={formData.gender} />}
                   </div>
                 </div>
               </fieldset>
 
               {/* SECTION 2: Program Category Selection */}
               <fieldset className="space-y-6">
-                <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">Section 2: Program Category Selection</legend>
+                <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 2: Program Category Selection</legend>
 
                 <div>
                   <Label>
@@ -424,27 +303,29 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.programCategory}
                     onValueChange={(value) => updateField("programCategory", value as ProgramCategory)}
+                    name="program_category"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="veterans" id="veterans" />
+                      <RadioGroupItem value="veterans" id="veterans" name="program_category" required />
                       <Label htmlFor="veterans" className="font-normal cursor-pointer">
                         Veterans & First Responders
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="recovery" id="recovery" />
+                      <RadioGroupItem value="recovery" id="recovery" name="program_category" />
                       <Label htmlFor="recovery" className="font-normal cursor-pointer">
                         Individuals in Recovery from Substance Use Disorders
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="couples" id="couples" />
+                      <RadioGroupItem value="couples" id="couples" name="program_category" />
                       <Label htmlFor="couples" className="font-normal cursor-pointer">
                         Couples Struggling in Marriage
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.programCategory && <input type="hidden" name="program_category" value={formData.programCategory} />}
                   {errors.programCategory && (
                     <p className="mt-1 text-sm text-destructive">{errors.programCategory}</p>
                   )}
@@ -459,6 +340,7 @@ export default function ApplyPage() {
                       </Label>
                       <Input
                         id="partnerName"
+                        name="partner_name"
                         type="text"
                         value={formData.partnerName}
                         onChange={(e) => updateField("partnerName", e.target.value)}
@@ -472,6 +354,7 @@ export default function ApplyPage() {
                       </Label>
                       <Input
                         id="partnerEmail"
+                        name="partner_email"
                         type="email"
                         value={formData.partnerEmail}
                         onChange={(e) => updateField("partnerEmail", e.target.value)}
@@ -488,6 +371,7 @@ export default function ApplyPage() {
                     <Label htmlFor="branchOrRole">Branch/Role (brief description)</Label>
                     <Input
                       id="branchOrRole"
+                      name="branch_or_role"
                       type="text"
                       placeholder="e.g., Army Veteran, Firefighter, EMT"
                       value={formData.branchOrRole}
@@ -499,7 +383,7 @@ export default function ApplyPage() {
 
               {/* SECTION 3: Connection to Program */}
               <fieldset className="space-y-6">
-                <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">Section 3: Connection to the Program</legend>
+                <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 3: Connection to the Program</legend>
 
                 <div>
                   <Label htmlFor="whatDrewYou">
@@ -507,6 +391,7 @@ export default function ApplyPage() {
                   </Label>
                   <Textarea
                     id="whatDrewYou"
+                    name="what_drew_you"
                     rows={4}
                     required
                     value={formData.whatDrewYou}
@@ -523,6 +408,7 @@ export default function ApplyPage() {
                   </Label>
                   <Textarea
                     id="hopingToGain"
+                    name="hoping_to_gain"
                     rows={4}
                     required
                     value={formData.hopingToGain}
@@ -538,26 +424,29 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.participatedBefore}
                     onValueChange={(value) => updateField("participatedBefore", value)}
+                    name="participated_before"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="participated-yes" />
+                      <RadioGroupItem value="yes" id="participated-yes" name="participated_before" />
                       <Label htmlFor="participated-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id="participated-no" />
+                      <RadioGroupItem value="no" id="participated-no" name="participated_before" />
                       <Label htmlFor="participated-no" className="font-normal cursor-pointer">
                         No
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.participatedBefore && <input type="hidden" name="participated_before" value={formData.participatedBefore} />}
                   {formData.participatedBefore === "yes" && (
                     <div className="mt-4">
                       <Label htmlFor="participatedDescription">Brief description (optional)</Label>
                       <Textarea
                         id="participatedDescription"
+                        name="participated_description"
                         rows={3}
                         value={formData.participatedDescription}
                         onChange={(e) => updateField("participatedDescription", e.target.value)}
@@ -569,7 +458,7 @@ export default function ApplyPage() {
 
               {/* SECTION 4: Readiness & Safety Screening */}
               <fieldset className="space-y-6">
-                <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">
+                <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">
                   Section 4: High-Level Readiness & Safety Screening
                 </legend>
 
@@ -581,27 +470,29 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.physicalActivity}
                     onValueChange={(value) => updateField("physicalActivity", value)}
+                    name="physical_activity"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="physical-yes" />
+                      <RadioGroupItem value="yes" id="physical-yes" name="physical_activity" required />
                       <Label htmlFor="physical-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="with-limitations" id="physical-limitations" />
+                      <RadioGroupItem value="with-limitations" id="physical-limitations" name="physical_activity" />
                       <Label htmlFor="physical-limitations" className="font-normal cursor-pointer">
                         With some limitations
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id="physical-no" />
+                      <RadioGroupItem value="no" id="physical-no" name="physical_activity" />
                       <Label htmlFor="physical-no" className="font-normal cursor-pointer">
                         No
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.physicalActivity && <input type="hidden" name="physical_activity" value={formData.physicalActivity} />}
                   {errors.physicalActivity && (
                     <p className="mt-1 text-sm text-destructive">{errors.physicalActivity}</p>
                   )}
@@ -615,27 +506,29 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.emotionalReadiness}
                     onValueChange={(value) => updateField("emotionalReadiness", value)}
+                    name="emotional_readiness"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="emotional-yes" />
+                      <RadioGroupItem value="yes" id="emotional-yes" name="emotional_readiness" required />
                       <Label htmlFor="emotional-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="unsure" id="emotional-unsure" />
+                      <RadioGroupItem value="unsure" id="emotional-unsure" name="emotional_readiness" />
                       <Label htmlFor="emotional-unsure" className="font-normal cursor-pointer">
                         Unsure
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id="emotional-no" />
+                      <RadioGroupItem value="no" id="emotional-no" name="emotional_readiness" />
                       <Label htmlFor="emotional-no" className="font-normal cursor-pointer">
                         No
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.emotionalReadiness && <input type="hidden" name="emotional_readiness" value={formData.emotionalReadiness} />}
                   {errors.emotionalReadiness && (
                     <p className="mt-1 text-sm text-destructive">{errors.emotionalReadiness}</p>
                   )}
@@ -646,34 +539,36 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.professionalSupports}
                     onValueChange={(value) => updateField("professionalSupports", value)}
+                    name="professional_supports"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="supports-yes" />
+                      <RadioGroupItem value="yes" id="supports-yes" name="professional_supports" />
                       <Label htmlFor="supports-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id="supports-no" />
+                      <RadioGroupItem value="no" id="supports-no" name="professional_supports" />
                       <Label htmlFor="supports-no" className="font-normal cursor-pointer">
                         No
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="prefer-not-to-say" id="supports-prefer-not" />
+                      <RadioGroupItem value="prefer-not-to-say" id="supports-prefer-not" name="professional_supports" />
                       <Label htmlFor="supports-prefer-not" className="font-normal cursor-pointer">
                         Prefer not to say
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.professionalSupports && <input type="hidden" name="professional_supports" value={formData.professionalSupports} />}
                 </div>
               </fieldset>
 
               {/* SECTION 5: Category-Specific Questions */}
               {formData.programCategory && (
                 <fieldset className="space-y-6">
-                  <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">
+                  <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">
                     Section 5: Category-Specific Questions
                   </legend>
 
@@ -688,6 +583,9 @@ export default function ApplyPage() {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="service-veteran"
+                              name="service_background[]"
+                              value="veteran"
+                              required
                               checked={formData.serviceBackground.includes("veteran")}
                               onCheckedChange={() => toggleServiceBackground("veteran")}
                             />
@@ -698,6 +596,8 @@ export default function ApplyPage() {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="service-active"
+                              name="service_background[]"
+                              value="active"
                               checked={formData.serviceBackground.includes("active")}
                               onCheckedChange={() => toggleServiceBackground("active")}
                             />
@@ -708,6 +608,8 @@ export default function ApplyPage() {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="service-first-responder"
+                              name="service_background[]"
+                              value="first-responder"
                               checked={formData.serviceBackground.includes("first-responder")}
                               onCheckedChange={() => toggleServiceBackground("first-responder")}
                             />
@@ -716,6 +618,9 @@ export default function ApplyPage() {
                             </Label>
                           </div>
                         </div>
+                        {formData.serviceBackground.map((value) => (
+                          <input key={value} type="hidden" name="service_background[]" value={value} />
+                        ))}
                         {errors.serviceBackground && (
                           <p className="mt-1 text-sm text-destructive">{errors.serviceBackground}</p>
                         )}
@@ -729,22 +634,23 @@ export default function ApplyPage() {
                         <RadioGroup
                           value={formData.experiencingIsolation}
                           onValueChange={(value) => updateField("experiencingIsolation", value)}
+                          name="experiencing_isolation"
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="isolation-yes" />
+                            <RadioGroupItem value="yes" id="isolation-yes" name="experiencing_isolation" />
                             <Label htmlFor="isolation-yes" className="font-normal cursor-pointer">
                               Yes
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="isolation-no" />
+                            <RadioGroupItem value="no" id="isolation-no" name="experiencing_isolation" />
                             <Label htmlFor="isolation-no" className="font-normal cursor-pointer">
                               No
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="prefer-not-to-say" id="isolation-prefer-not" />
+                            <RadioGroupItem value="prefer-not-to-say" id="isolation-prefer-not" name="experiencing_isolation" />
                             <Label htmlFor="isolation-prefer-not" className="font-normal cursor-pointer">
                               Prefer not to say
                             </Label>
@@ -764,21 +670,23 @@ export default function ApplyPage() {
                         <RadioGroup
                           value={formData.inRecovery}
                           onValueChange={(value) => updateField("inRecovery", value)}
+                          name="in_recovery"
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="recovery-yes" />
+                            <RadioGroupItem value="yes" id="recovery-yes" name="in_recovery" required />
                             <Label htmlFor="recovery-yes" className="font-normal cursor-pointer">
                               Yes
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="recovery-no" />
+                            <RadioGroupItem value="no" id="recovery-no" name="in_recovery" />
                             <Label htmlFor="recovery-no" className="font-normal cursor-pointer">
                               No
                             </Label>
                           </div>
                         </RadioGroup>
+                        {formData.inRecovery && <input type="hidden" name="in_recovery" value={formData.inRecovery} />}
                         {errors.inRecovery && <p className="mt-1 text-sm text-destructive">{errors.inRecovery}</p>}
                       </div>
 
@@ -789,27 +697,29 @@ export default function ApplyPage() {
                         <RadioGroup
                           value={formData.recoveryLength}
                           onValueChange={(value) => updateField("recoveryLength", value)}
+                          name="recovery_length"
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="less-than-6" id="recovery-less-6" />
+                            <RadioGroupItem value="less-than-6" id="recovery-less-6" name="recovery_length" required />
                             <Label htmlFor="recovery-less-6" className="font-normal cursor-pointer">
                               Less than 6 months
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="6-12" id="recovery-6-12" />
+                            <RadioGroupItem value="6-12" id="recovery-6-12" name="recovery_length" />
                             <Label htmlFor="recovery-6-12" className="font-normal cursor-pointer">
                               6–12 months
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="1-plus" id="recovery-1-plus" />
+                            <RadioGroupItem value="1-plus" id="recovery-1-plus" name="recovery_length" />
                             <Label htmlFor="recovery-1-plus" className="font-normal cursor-pointer">
                               1+ years
                             </Label>
                           </div>
                         </RadioGroup>
+                        {formData.recoveryLength && <input type="hidden" name="recovery_length" value={formData.recoveryLength} />}
                         {errors.recoveryLength && (
                           <p className="mt-1 text-sm text-destructive">{errors.recoveryLength}</p>
                         )}
@@ -822,21 +732,23 @@ export default function ApplyPage() {
                         <RadioGroup
                           value={formData.recoverySupport}
                           onValueChange={(value) => updateField("recoverySupport", value)}
+                          name="recovery_support"
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="recovery-support-yes" />
+                            <RadioGroupItem value="yes" id="recovery-support-yes" name="recovery_support" />
                             <Label htmlFor="recovery-support-yes" className="font-normal cursor-pointer">
                               Yes
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="recovery-support-no" />
+                            <RadioGroupItem value="no" id="recovery-support-no" name="recovery_support" />
                             <Label htmlFor="recovery-support-no" className="font-normal cursor-pointer">
                               No
                             </Label>
                           </div>
                         </RadioGroup>
+                        {formData.recoverySupport && <input type="hidden" name="recovery_support" value={formData.recoverySupport} />}
                       </div>
                     </div>
                   )}
@@ -848,6 +760,7 @@ export default function ApplyPage() {
                         <Label htmlFor="togetherLength">How long have you been together?</Label>
                         <Input
                           id="togetherLength"
+                          name="together_length"
                           type="text"
                           placeholder="e.g., 5 years, 2 years married"
                           value={formData.togetherLength}
@@ -863,21 +776,23 @@ export default function ApplyPage() {
                         <RadioGroup
                           value={formData.bothPartnersWilling}
                           onValueChange={(value) => updateField("bothPartnersWilling", value)}
+                          name="both_partners_willing"
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="partners-willing-yes" />
+                            <RadioGroupItem value="yes" id="partners-willing-yes" name="both_partners_willing" required />
                             <Label htmlFor="partners-willing-yes" className="font-normal cursor-pointer">
                               Yes
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="partners-willing-no" />
+                            <RadioGroupItem value="no" id="partners-willing-no" name="both_partners_willing" />
                             <Label htmlFor="partners-willing-no" className="font-normal cursor-pointer">
                               No
                             </Label>
                           </div>
                         </RadioGroup>
+                        {formData.bothPartnersWilling && <input type="hidden" name="both_partners_willing" value={formData.bothPartnersWilling} />}
                         {errors.bothPartnersWilling && (
                           <p className="mt-1 text-sm text-destructive">{errors.bothPartnersWilling}</p>
                         )}
@@ -888,27 +803,29 @@ export default function ApplyPage() {
                         <RadioGroup
                           value={formData.couplesCounseling}
                           onValueChange={(value) => updateField("couplesCounseling", value)}
+                          name="couples_counseling"
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="counseling-yes" />
+                            <RadioGroupItem value="yes" id="counseling-yes" name="couples_counseling" />
                             <Label htmlFor="counseling-yes" className="font-normal cursor-pointer">
                               Yes
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="counseling-no" />
+                            <RadioGroupItem value="no" id="counseling-no" name="couples_counseling" />
                             <Label htmlFor="counseling-no" className="font-normal cursor-pointer">
                               No
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="unsure" id="counseling-unsure" />
+                            <RadioGroupItem value="unsure" id="counseling-unsure" name="couples_counseling" />
                             <Label htmlFor="counseling-unsure" className="font-normal cursor-pointer">
                               Unsure
                             </Label>
                           </div>
                         </RadioGroup>
+                        {formData.couplesCounseling && <input type="hidden" name="couples_counseling" value={formData.couplesCounseling} />}
                       </div>
                     </div>
                   )}
@@ -917,7 +834,7 @@ export default function ApplyPage() {
 
               {/* SECTION 6: Logistics & Commitment */}
               <fieldset className="space-y-6">
-                <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">Section 6: Logistics & Commitment</legend>
+                <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 6: Logistics & Commitment</legend>
 
                 <div>
                   <Label>
@@ -927,27 +844,29 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.ableToCommit}
                     onValueChange={(value) => updateField("ableToCommit", value)}
+                    name="able_to_commit"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="commit-yes" />
+                      <RadioGroupItem value="yes" id="commit-yes" name="able_to_commit" required />
                       <Label htmlFor="commit-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="possibly" id="commit-possibly" />
+                      <RadioGroupItem value="possibly" id="commit-possibly" name="able_to_commit" />
                       <Label htmlFor="commit-possibly" className="font-normal cursor-pointer">
                         Possibly (with coordination)
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id="commit-no" />
+                      <RadioGroupItem value="no" id="commit-no" name="able_to_commit" />
                       <Label htmlFor="commit-no" className="font-normal cursor-pointer">
                         No
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.ableToCommit && <input type="hidden" name="able_to_commit" value={formData.ableToCommit} />}
                   {errors.ableToCommit && <p className="mt-1 text-sm text-destructive">{errors.ableToCommit}</p>}
                 </div>
 
@@ -959,27 +878,29 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.financialAssistance}
                     onValueChange={(value) => updateField("financialAssistance", value)}
+                    name="financial_assistance"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="financial-yes" />
+                      <RadioGroupItem value="yes" id="financial-yes" name="financial_assistance" required />
                       <Label htmlFor="financial-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="partial" id="financial-partial" />
+                      <RadioGroupItem value="partial" id="financial-partial" name="financial_assistance" />
                       <Label htmlFor="financial-partial" className="font-normal cursor-pointer">
                         Partial assistance
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id="financial-no" />
+                      <RadioGroupItem value="no" id="financial-no" name="financial_assistance" />
                       <Label htmlFor="financial-no" className="font-normal cursor-pointer">
                         No
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.financialAssistance && <input type="hidden" name="financial_assistance" value={formData.financialAssistance} />}
                   {errors.financialAssistance && (
                     <p className="mt-1 text-sm text-destructive">{errors.financialAssistance}</p>
                   )}
@@ -992,6 +913,7 @@ export default function ApplyPage() {
                   </Label>
                   <Textarea
                     id="dietaryAccessibility"
+                    name="dietary_accessibility"
                     rows={3}
                     value={formData.dietaryAccessibility}
                     onChange={(e) => updateField("dietaryAccessibility", e.target.value)}
@@ -1001,7 +923,7 @@ export default function ApplyPage() {
 
               {/* SECTION 7: Values & Group Fit */}
               <fieldset className="space-y-6">
-                <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">Section 7: Values & Group Fit</legend>
+                <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 7: Values & Group Fit</legend>
 
                 <div>
                   <Label>
@@ -1011,21 +933,23 @@ export default function ApplyPage() {
                   <RadioGroup
                     value={formData.alignedWithValues}
                     onValueChange={(value) => updateField("alignedWithValues", value)}
+                    name="aligned_with_values"
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="values-yes" />
+                      <RadioGroupItem value="yes" id="values-yes" name="aligned_with_values" required />
                       <Label htmlFor="values-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="unsure" id="values-unsure" />
+                      <RadioGroupItem value="unsure" id="values-unsure" name="aligned_with_values" />
                       <Label htmlFor="values-unsure" className="font-normal cursor-pointer">
                         Unsure
                       </Label>
                     </div>
                   </RadioGroup>
+                  {formData.alignedWithValues && <input type="hidden" name="aligned_with_values" value={formData.alignedWithValues} />}
                   {errors.alignedWithValues && (
                     <p className="mt-1 text-sm text-destructive">{errors.alignedWithValues}</p>
                   )}
@@ -1037,6 +961,7 @@ export default function ApplyPage() {
                   </Label>
                   <Textarea
                     id="anythingElse"
+                    name="anything_else"
                     rows={4}
                     value={formData.anythingElse}
                     onChange={(e) => updateField("anythingElse", e.target.value)}
@@ -1046,16 +971,19 @@ export default function ApplyPage() {
 
               {/* SECTION 8: Consent & Acknowledgment */}
               <fieldset className="space-y-6">
-                <legend className="text-xl sm:text-2xl font-bold text-at-dark-green mb-4">Section 8: Consent & Acknowledgment</legend>
+                <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 8: Consent & Acknowledgment</legend>
 
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
                     <Checkbox
                       id="notGuarantee"
+                      name="not_guarantee"
+                      required
                       checked={formData.notGuarantee}
                       onCheckedChange={(checked) => updateField("notGuarantee", checked as boolean)}
                       className={errors.notGuarantee ? "border-destructive" : ""}
                     />
+                    {formData.notGuarantee && <input type="hidden" name="not_guarantee" value="on" />}
                     <Label htmlFor="notGuarantee" className="font-normal cursor-pointer leading-relaxed">
                       I understand this is an application and not a guarantee of participation{" "}
                       <span className="text-destructive">*</span>
@@ -1066,10 +994,13 @@ export default function ApplyPage() {
                   <div className="flex items-start space-x-3">
                     <Checkbox
                       id="additionalScreening"
+                      name="additional_screening"
+                      required
                       checked={formData.additionalScreening}
                       onCheckedChange={(checked) => updateField("additionalScreening", checked as boolean)}
                       className={errors.additionalScreening ? "border-destructive" : ""}
                     />
+                    {formData.additionalScreening && <input type="hidden" name="additional_screening" value="on" />}
                     <Label htmlFor="additionalScreening" className="font-normal cursor-pointer leading-relaxed">
                       I understand additional screening, interviews, and documentation may be required{" "}
                       <span className="text-destructive">*</span>
@@ -1082,10 +1013,13 @@ export default function ApplyPage() {
                   <div className="flex items-start space-x-3">
                     <Checkbox
                       id="informationAccurate"
+                      name="information_accurate"
+                      required
                       checked={formData.informationAccurate}
                       onCheckedChange={(checked) => updateField("informationAccurate", checked as boolean)}
                       className={errors.informationAccurate ? "border-destructive" : ""}
                     />
+                    {formData.informationAccurate && <input type="hidden" name="information_accurate" value="on" />}
                     <Label htmlFor="informationAccurate" className="font-normal cursor-pointer leading-relaxed">
                       I certify that the information provided is true to the best of my knowledge{" "}
                       <span className="text-destructive">*</span>
@@ -1099,14 +1033,51 @@ export default function ApplyPage() {
 
               {/* Submit Button */}
               <div className="pt-8">
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={isSubmitting}
-                  className="w-full bg-at-orange text-at-dark-green hover:bg-at-orange/90 shadow-lg border-2 border-at-orange font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                <button
+                  type="button"
+                  disabled={isSubmitting || submitSuccess}
+                  onClick={() => {
+                    if (formRef.current && !isSubmitting && !submitSuccess) {
+                      setIsSubmitting(true)
+                      
+                      // Create a hidden iframe to submit the form
+                      const iframe = document.createElement('iframe')
+                      iframe.name = 'formsubmit-iframe'
+                      iframe.style.display = 'none'
+                      document.body.appendChild(iframe)
+                      
+                      // Set form target to iframe and submit
+                      formRef.current.target = 'formsubmit-iframe'
+                      formRef.current.action = 'https://formsubmit.co/zenjamindev@gmail.com'
+                      formRef.current.method = 'POST'
+                      
+                      // Listen for iframe load to know when submission is complete
+                      iframe.onload = () => {
+                        setIsSubmitting(false)
+                        setSubmitSuccess(true)
+                        // Clean up iframe
+                        setTimeout(() => {
+                          document.body.removeChild(iframe)
+                        }, 1000)
+                        // Scroll to top to show success message
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                      }
+                      
+                      // Handle iframe errors
+                      iframe.onerror = () => {
+                        setIsSubmitting(false)
+                        alert('There was an error submitting your application. Please try again.')
+                        document.body.removeChild(iframe)
+                      }
+                      
+                      // Submit the form
+                      formRef.current.submit()
+                    }
+                  }}
+                  className="w-full bg-at-orange text-at-dark-green hover:bg-at-orange/90 shadow-lg border-2 border-at-orange font-semibold h-11 px-8 rounded-md text-base disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "Submitting..." : "Submit Application"}
-                </Button>
+                  {isSubmitting ? "Submitting..." : submitSuccess ? "Submitted!" : "Submit Application"}
+                </button>
               </div>
             </form>
           </div>

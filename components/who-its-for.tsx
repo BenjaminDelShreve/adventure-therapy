@@ -5,22 +5,9 @@ export function WhoItsFor() {
   return (
     <section id="who" className="bg-muted py-20 sm:py-24 lg:py-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl">
-            Who is Adventure Therapy for?
-          </h2>
-          <h3 className="mt-8 text-2xl font-bold text-at-dark-green">HEROES</h3>
-          <p className="mx-auto mt-4 max-w-3xl text-pretty text-lg leading-relaxed text-foreground/80">
-            We empower Veterans and First Responders by providing outdoor adventures and group activities in nature that
-            promote healing, resilience, and camaraderie. Through challenging and restorative experiences in the great
-            outdoors, we foster mental and physical well-being, strengthen community connections, and support the
-            transition to a healthier, purpose-driven life. We are committed to honoring those who have served by
-            offering a space for growth, adventure, and renewal.
-          </p>
-        </div>
-        <div className="mt-16">
+        <div>
           <Card className="border-border bg-card p-8 sm:p-10 lg:p-12">
-            <h3 className="text-2xl font-bold text-at-dark-green">
+            <h3 className="text-2xl font-bold text-at-blue">
               Qualifying Applicants Must Be (Active or Retired):
             </h3>
             <ul className="mt-6 space-y-3 text-lg leading-relaxed text-foreground/80">
@@ -61,7 +48,7 @@ export function WhoItsFor() {
         </div>
         <div className="mt-16">
           <Card className="border-border bg-card p-8 sm:p-10 lg:p-12">
-            <h3 className="text-2xl font-bold text-at-dark-green">THE WHY</h3>
+            <h3 className="text-2xl font-bold text-at-blue">THE WHY</h3>
             <div className="mt-6 space-y-4 text-lg leading-relaxed text-foreground/80">
               <p>
                 The statistics are alarming and it's no secret that the mental and physical health of Americans has been

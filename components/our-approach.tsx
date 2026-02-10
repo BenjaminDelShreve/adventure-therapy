@@ -1,34 +1,12 @@
 import Image from "next/image"
 
-const values = [
-  {
-    title: "Evidence-Based",
-    description:
-      "We use proven therapeutic methods backed by research, combined with the natural benefits of outdoor activity.",
-  },
-  {
-    title: "Safety First",
-    description:
-      "Physical and emotional safety are our top priorities. All staff are trained in wilderness medicine and trauma-informed care.",
-  },
-  {
-    title: "Person-Centered",
-    description: "Your goals guide the work. We meet you where you are and move at a pace that feels right for you.",
-  },
-  {
-    title: "Experienced Guides",
-    description:
-      "Our team includes licensed therapists and certified outdoor educators who bring both clinical expertise and wilderness skills.",
-  },
-]
-
 export function OurApproach() {
   return (
     <section id="about" className="bg-background py-20 sm:py-24 lg:py-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div>
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl">
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-blue sm:text-4xl lg:text-5xl">
               About Us
             </h2>
             <p className="mt-4 text-pretty text-lg leading-relaxed text-foreground/80">
@@ -58,7 +36,7 @@ export function OurApproach() {
             />
           </div>
           <div>
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl">
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-blue sm:text-4xl lg:text-5xl">
               Jessy Davis
             </h2>
             <p className="mt-4 text-pretty text-lg leading-relaxed text-foreground/80">
@@ -80,7 +58,7 @@ export function OurApproach() {
             />
           </div>
           <div>
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl">
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-blue sm:text-4xl lg:text-5xl">
               Chris Davis
             </h2>
             <p className="mt-4 text-pretty text-lg leading-relaxed text-foreground/80">
@@ -90,14 +68,6 @@ export function OurApproach() {
               his testimony with others.
             </p>
           </div>
-        </div>
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:gap-12">
-          {values.map((value) => (
-            <div key={value.title} className="space-y-3">
-              <h3 className="text-xl font-bold text-at-dark-green">{value.title}</h3>
-              <p className="leading-relaxed text-foreground/80">{value.description}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>

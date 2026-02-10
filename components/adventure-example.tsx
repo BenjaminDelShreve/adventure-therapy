@@ -4,7 +4,7 @@ export function AdventureExample() {
   return (
     <section className="py-20 sm:py-24 lg:py-32 bg-background">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl text-center mb-12">
+        <h2 className="text-balance text-3xl font-bold tracking-tight text-at-blue sm:text-4xl lg:text-5xl text-center mb-12">
           Adventure Example
         </h2>
         <div className="max-w-4xl mx-auto">
@@ -14,11 +14,11 @@ export function AdventureExample() {
           
           <div className="space-y-6 mb-12">
             <div>
-              <h3 className="font-bold text-at-dark-green text-xl mb-2">Day 1: Travel to Destination; intro briefing at dinner</h3>
+              <h3 className="font-bold text-at-blue text-xl mb-2">Day 1: Travel to Destination; intro briefing at dinner</h3>
             </div>
             
             <div>
-              <h3 className="font-bold text-at-dark-green text-xl mb-2">Day 2: Water Day (any of the following)</h3>
+              <h3 className="font-bold text-at-blue text-xl mb-2">Day 2: Water Day (any of the following)</h3>
               <ul className="list-disc list-inside ml-4 space-y-1 text-foreground/80">
                 <li>Kayaking</li>
                 <li>White Water Rafting</li>
@@ -28,17 +28,17 @@ export function AdventureExample() {
             </div>
             
             <div>
-              <h3 className="font-bold text-at-dark-green text-xl mb-2">Day 3: E-Bike Day</h3>
+              <h3 className="font-bold text-at-blue text-xl mb-2">Day 3: E-Bike Day</h3>
               <p className="text-foreground/80 ml-4">(moderate; warm up muscles for the following day)</p>
             </div>
             
             <div>
-              <h3 className="font-bold text-at-dark-green text-xl mb-2">Day 4: Hike Day</h3>
+              <h3 className="font-bold text-at-blue text-xl mb-2">Day 4: Hike Day</h3>
               <p className="text-foreground/80 ml-4">(may be two days depending on distance & elevation)</p>
             </div>
             
             <div>
-              <h3 className="font-bold text-at-dark-green text-xl mb-2">Day 5: Travel to Home</h3>
+              <h3 className="font-bold text-at-blue text-xl mb-2">Day 5: Travel to Home</h3>
             </div>
           </div>
 
@@ -69,8 +69,8 @@ export function AdventureExample() {
             </div>
             <div className="overflow-hidden rounded-lg">
               <Image
-                src="/images/group-hike-steep.jpg"
-                alt="Group hiking on steep terrain"
+                src="/images/biking-adventure-therapy.jpeg"
+                alt="Group mountain biking adventure"
                 width={800}
                 height={600}
                 className="h-full w-full object-cover"
@@ -84,6 +84,33 @@ export function AdventureExample() {
                 height={600}
                 className="h-full w-full object-cover"
               />
+            </div>
+          </div>
+
+          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:gap-12">
+            <div className="space-y-3">
+                    <h3 className="text-xl font-bold text-at-blue">Evidence-Based</h3>
+              <p className="leading-relaxed text-foreground/80">
+                We use proven therapeutic methods backed by research, combined with the natural benefits of outdoor activity.
+              </p>
+            </div>
+            <div className="space-y-3">
+                    <h3 className="text-xl font-bold text-at-blue">Safety First</h3>
+              <p className="leading-relaxed text-foreground/80">
+                Physical and emotional safety are our top priorities. All staff are trained in wilderness medicine and trauma-informed care.
+              </p>
+            </div>
+            <div className="space-y-3">
+                    <h3 className="text-xl font-bold text-at-blue">Person-Centered</h3>
+              <p className="leading-relaxed text-foreground/80">
+                Your goals guide the work. We meet you where you are and move at a pace that feels right for you.
+              </p>
+            </div>
+            <div className="space-y-3">
+                    <h3 className="text-xl font-bold text-at-blue">Experienced Guides</h3>
+              <p className="leading-relaxed text-foreground/80">
+                Our team includes licensed therapists and certified outdoor educators who bring both clinical expertise and wilderness skills.
+              </p>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ export function WhatIsAdventureTherapy() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl">
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-at-blue sm:text-4xl lg:text-5xl">
               Our Mission
             </h2>
             <div className="mt-6 space-y-4 text-pretty leading-relaxed text-foreground/80">

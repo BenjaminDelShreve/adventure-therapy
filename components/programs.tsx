@@ -59,7 +59,7 @@ export function Programs() {
     <section id="programs" className="py-20 sm:py-24 lg:py-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-at-dark-green sm:text-4xl lg:text-5xl">
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-at-blue sm:text-4xl lg:text-5xl">
             Our Programs
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg leading-relaxed text-foreground/80">
@@ -84,10 +84,10 @@ export function Programs() {
                   <div className="text-sm font-semibold uppercase tracking-wide text-at-light-green">
                     {program.duration}
                   </div>
-                  <h3 className="mt-2 text-2xl font-bold text-at-dark-green">{program.name}</h3>
+                  <h3 className="mt-2 text-2xl font-bold text-at-blue">{program.name}</h3>
                   <p className="mt-4 leading-relaxed text-foreground/80">{program.description}</p>
                   {program.featuresTitle && (
-                    <h4 className="mt-6 font-bold text-at-dark-green">{program.featuresTitle}</h4>
+                    <h4 className="mt-6 font-bold text-at-blue">{program.featuresTitle}</h4>
                   )}
                   <ul className="mt-6 space-y-3">
                     {program.features.map((feature) => (
