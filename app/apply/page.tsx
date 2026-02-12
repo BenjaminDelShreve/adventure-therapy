@@ -145,7 +145,7 @@ export default function ApplyPage() {
 
             <form
               ref={formRef}
-              action="https://formsubmit.co/zenjamindev@gmail.com"
+              action="https://formsubmit.co/chris@adventuretherapy.co"
               method="POST"
               noValidate
               className="mt-12 space-y-12"
@@ -154,7 +154,7 @@ export default function ApplyPage() {
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_next" value="https://adventure-therapy.vercel.app" />
-              <input type="hidden" name="_cc" value="jessy@adventuretherapy.co,chris@adventuretherapy.co" />
+              <input type="hidden" name="_cc" value="jessy@adventuretherapy.co" />
               {/* SECTION 1: Basic Applicant Information */}
               <fieldset className="space-y-6">
                 <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 1: Basic Applicant Information</legend>
@@ -1049,7 +1049,7 @@ export default function ApplyPage() {
                       
                       // Set form target to iframe and submit
                       formRef.current.target = 'formsubmit-iframe'
-                      formRef.current.action = 'https://formsubmit.co/zenjamindev@gmail.com'
+                      formRef.current.action = 'https://formsubmit.co/chris@adventuretherapy.co'
                       formRef.current.method = 'POST'
                       
                       // Listen for iframe load to know when submission is complete
