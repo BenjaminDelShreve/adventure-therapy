@@ -154,6 +154,7 @@ export default function ApplyPage() {
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_next" value="https://adventure-therapy.vercel.app" />
+              <input type="hidden" name="_cc" value="jessy@adventuretherapy.co,chris@adventuretherapy.co" />
               {/* SECTION 1: Basic Applicant Information */}
               <fieldset className="space-y-6">
                 <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 1: Basic Applicant Information</legend>
