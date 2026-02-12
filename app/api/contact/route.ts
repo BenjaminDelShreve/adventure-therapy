@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     // Send email using Resend
     const { error } = await resend.emails.send({
-      from: process.env.FROM_EMAIL || "Adventure Therapy <no-reply@adventuretherapy.co>",
+      from: 'onboarding@resend.dev',
       to: notifyEmails,
       subject: `New Contact Form Submission from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
