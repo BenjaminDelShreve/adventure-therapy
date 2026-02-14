@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -71,9 +71,6 @@ export default function ApplyPage() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [useDateOfBirth, setUseDateOfBirth] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
-  const formRef = useRef<HTMLFormElement>(null)
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -116,15 +113,6 @@ export default function ApplyPage() {
               Adventure Therapy Application
             </h1>
 
-            {/* Success Message */}
-            {submitSuccess && (
-              <div className="mt-8 rounded-lg border border-green-500 bg-green-50 dark:bg-green-950/20 p-6">
-                <p className="text-green-800 dark:text-green-200 font-medium">
-                  Application submitted successfully! We'll be in touch soon.
-                </p>
-              </div>
-            )}
-
             {/* Intro Framing */}
             <div className="mt-8 rounded-lg border border-border bg-card p-6">
               <p className="text-pretty text-base leading-relaxed text-foreground/80 mb-4">
@@ -144,10 +132,8 @@ export default function ApplyPage() {
             </div>
 
             <form
-              ref={formRef}
               action="https://formsubmit.co/chris@adventuretherapy.co"
               method="POST"
-              noValidate
               className="mt-12 space-y-12"
             >
               <input type="hidden" name="_subject" value="New Adventure Therapy Application" />
@@ -1035,49 +1021,10 @@ export default function ApplyPage() {
               {/* Submit Button */}
               <div className="pt-8">
                 <button
-                  type="button"
-                  disabled={isSubmitting || submitSuccess}
-                  onClick={() => {
-                    if (formRef.current && !isSubmitting && !submitSuccess) {
-                      setIsSubmitting(true)
-                      
-                      // Create a hidden iframe to submit the form
-                      const iframe = document.createElement('iframe')
-                      iframe.name = 'formsubmit-iframe'
-                      iframe.style.display = 'none'
-                      document.body.appendChild(iframe)
-                      
-                      // Set form target to iframe and submit
-                      formRef.current.target = 'formsubmit-iframe'
-                      formRef.current.action = 'https://formsubmit.co/chris@adventuretherapy.co'
-                      formRef.current.method = 'POST'
-                      
-                      // Listen for iframe load to know when submission is complete
-                      iframe.onload = () => {
-                        setIsSubmitting(false)
-                        setSubmitSuccess(true)
-                        // Clean up iframe
-                        setTimeout(() => {
-                          document.body.removeChild(iframe)
-                        }, 1000)
-                        // Scroll to top to show success message
-                        window.scrollTo({ top: 0, behavior: 'smooth' })
-                      }
-                      
-                      // Handle iframe errors
-                      iframe.onerror = () => {
-                        setIsSubmitting(false)
-                        alert('There was an error submitting your application. Please try again.')
-                        document.body.removeChild(iframe)
-                      }
-                      
-                      // Submit the form
-                      formRef.current.submit()
-                    }
-                  }}
-                  className="w-full bg-at-orange text-at-dark-green hover:bg-at-orange/90 shadow-lg border-2 border-at-orange font-semibold h-11 px-8 rounded-md text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="submit"
+                  className="w-full bg-at-orange text-at-dark-green hover:bg-at-orange/90 shadow-lg border-2 border-at-orange font-semibold h-11 px-8 rounded-md text-base"
                 >
-                  {isSubmitting ? "Submitting..." : submitSuccess ? "Submitted!" : "Submit Application"}
+                  Submit Application
                 </button>
               </div>
             </form>
