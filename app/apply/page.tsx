@@ -136,11 +136,8 @@ export default function ApplyPage() {
               method="POST"
               className="mt-12 space-y-12"
             >
-              <input type="hidden" name="_subject" value="New Adventure Therapy Application" />
-              <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_next" value="https://adventure-therapy.vercel.app" />
-              <input type="hidden" name="_cc" value="jessy@adventuretherapy.co" />
+              <input type="hidden" name="_next" value="https://adventure-therapy.vercel.app/thank-you" />
               {/* SECTION 1: Basic Applicant Information */}
               <fieldset className="space-y-6">
                 <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">Section 1: Basic Applicant Information</legend>
