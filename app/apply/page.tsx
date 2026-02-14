@@ -291,7 +291,7 @@ export default function ApplyPage() {
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="veterans" id="veterans" name="program_category" required />
+                      <RadioGroupItem value="veterans" id="veterans" name="program_category" />
                       <Label htmlFor="veterans" className="font-normal cursor-pointer">
                         Veterans & First Responders
                       </Label>
@@ -458,7 +458,7 @@ export default function ApplyPage() {
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="physical-yes" name="physical_activity" required />
+                      <RadioGroupItem value="yes" id="physical-yes" name="physical_activity" />
                       <Label htmlFor="physical-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
@@ -494,7 +494,7 @@ export default function ApplyPage() {
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="emotional-yes" name="emotional_readiness" required />
+                      <RadioGroupItem value="yes" id="emotional-yes" name="emotional_readiness" />
                       <Label htmlFor="emotional-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
@@ -569,7 +569,6 @@ export default function ApplyPage() {
                               id="service-veteran"
                               name="service_background[]"
                               value="veteran"
-                              required
                               checked={formData.serviceBackground.includes("veteran")}
                               onCheckedChange={() => toggleServiceBackground("veteran")}
                             />
@@ -658,7 +657,7 @@ export default function ApplyPage() {
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="recovery-yes" name="in_recovery" required />
+                            <RadioGroupItem value="yes" id="recovery-yes" name="in_recovery" />
                             <Label htmlFor="recovery-yes" className="font-normal cursor-pointer">
                               Yes
                             </Label>
@@ -685,7 +684,7 @@ export default function ApplyPage() {
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="less-than-6" id="recovery-less-6" name="recovery_length" required />
+                            <RadioGroupItem value="less-than-6" id="recovery-less-6" name="recovery_length" />
                             <Label htmlFor="recovery-less-6" className="font-normal cursor-pointer">
                               Less than 6 months
                             </Label>
@@ -764,7 +763,7 @@ export default function ApplyPage() {
                           className="mt-2"
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="yes" id="partners-willing-yes" name="both_partners_willing" required />
+                            <RadioGroupItem value="yes" id="partners-willing-yes" name="both_partners_willing" />
                             <Label htmlFor="partners-willing-yes" className="font-normal cursor-pointer">
                               Yes
                             </Label>
@@ -832,7 +831,7 @@ export default function ApplyPage() {
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="commit-yes" name="able_to_commit" required />
+                      <RadioGroupItem value="yes" id="commit-yes" name="able_to_commit" />
                       <Label htmlFor="commit-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
@@ -866,7 +865,7 @@ export default function ApplyPage() {
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="financial-yes" name="financial_assistance" required />
+                      <RadioGroupItem value="yes" id="financial-yes" name="financial_assistance" />
                       <Label htmlFor="financial-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
@@ -921,7 +920,7 @@ export default function ApplyPage() {
                     className="mt-2"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="values-yes" name="aligned_with_values" required />
+                      <RadioGroupItem value="yes" id="values-yes" name="aligned_with_values" />
                       <Label htmlFor="values-yes" className="font-normal cursor-pointer">
                         Yes
                       </Label>
@@ -962,7 +961,6 @@ export default function ApplyPage() {
                     <Checkbox
                       id="notGuarantee"
                       name="not_guarantee"
-                      required
                       checked={formData.notGuarantee}
                       onCheckedChange={(checked) => updateField("notGuarantee", checked as boolean)}
                       className={errors.notGuarantee ? "border-destructive" : ""}
@@ -979,7 +977,6 @@ export default function ApplyPage() {
                     <Checkbox
                       id="additionalScreening"
                       name="additional_screening"
-                      required
                       checked={formData.additionalScreening}
                       onCheckedChange={(checked) => updateField("additionalScreening", checked as boolean)}
                       className={errors.additionalScreening ? "border-destructive" : ""}
@@ -998,7 +995,6 @@ export default function ApplyPage() {
                     <Checkbox
                       id="informationAccurate"
                       name="information_accurate"
-                      required
                       checked={formData.informationAccurate}
                       onCheckedChange={(checked) => updateField("informationAccurate", checked as boolean)}
                       className={errors.informationAccurate ? "border-destructive" : ""}
