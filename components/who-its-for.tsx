@@ -7,47 +7,6 @@ export function WhoItsFor() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div>
           <Card className="border-border bg-card p-8 sm:p-10 lg:p-12">
-            <h3 className="text-2xl font-bold text-at-blue">
-              Qualifying Applicants Must Be (Active or Retired):
-            </h3>
-            <ul className="mt-6 space-y-3 text-lg leading-relaxed text-foreground/80">
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>U.S. Military Veteran or Active Duty</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>Firefighter</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>Law Enforcement</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>EMT/Paramedic</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>Public Safety Dispatcher</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>Emergency Room Personnel</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>At least 18 years of age</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-at-orange">•</span>
-                <span>Not have any convictions or pending convictions that are violent in nature</span>
-              </li>
-            </ul>
-          </Card>
-        </div>
-        <div className="mt-16">
-          <Card className="border-border bg-card p-8 sm:p-10 lg:p-12">
             <h3 className="text-2xl font-bold text-at-blue">THE WHY</h3>
             <div className="mt-6 space-y-4 text-lg leading-relaxed text-foreground/80">
               <p>
