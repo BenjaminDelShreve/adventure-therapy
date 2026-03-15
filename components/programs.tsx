@@ -52,6 +52,23 @@ const programs = [
     ],
     featuresTitle: "Qualifying Applicants Must:",
   },
+  {
+    name: "SURVIVORS",
+    duration: "Women Who Have Survived Domestic Violence",
+    image: "/images/survivors.jpg",
+    imageAlt: "Survivors program participants",
+    description:
+      "Nature and adventure can be powerful tools for healing after trauma. For women who have survived domestic violence, stepping into the restorative space of nature can help rebuild confidence, strength, and a sense of personal freedom. Through supportive group experiences and empowering outdoor challenges like hiking, kayaking, and biking, participants reconnect with their inner resilience while forming meaningful bonds with other women on similar paths toward healing and renewal.",
+    features: [
+      "Be a woman who has survived domestic violence or an abusive relationship",
+      "Be currently in a safe and stable living situation",
+      "Be at least 18 years of age",
+      "Be willing to participate in a supportive group environment focused on healing and growth",
+      "Provide references and/or support documentation if requested",
+      "Not have any convictions or pending convictions that are violent in nature",
+    ],
+    featuresTitle: "Qualifying Applicants Must",
+  },
 ]
 
 export function Programs() {
@@ -67,7 +84,7 @@ export function Programs() {
             support and carefully designed outdoor experiences.
           </p>
         </div>
-        <div className="mt-12 grid gap-8 lg:grid-cols-3">
+        <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {programs.map((program) => (
             <div key={program.name} className="flex flex-col">
               <div className="mb-4 overflow-hidden rounded-lg lg:aspect-[4/3]">
