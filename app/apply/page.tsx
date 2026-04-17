@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-type ProgramCategory = "veterans" | "recovery" | "couples" | ""
+type ProgramCategory = "veterans" | "recovery" | "couples" | "survivors" | ""
 
 export default function ApplyPage() {
   const [formData, setFormData] = useState({
@@ -308,6 +308,15 @@ export default function ApplyPage() {
                         Couples Struggling in Marriage
                       </Label>
                     </div>
+                    <div className="flex items-start space-x-2">
+                      <RadioGroupItem value="survivors" id="survivors" name="program_category" className="mt-1" />
+                      <Label htmlFor="survivors" className="font-normal cursor-pointer">
+                        <span className="block">Survivors</span>
+                        <span className="mt-1 block text-sm leading-relaxed text-foreground/80">
+                          Women Who Have Survived Domestic Violence
+                        </span>
+                      </Label>
+                    </div>
                   </RadioGroup>
                   {formData.programCategory && <input type="hidden" name="program_category" value={formData.programCategory} />}
                   {errors.programCategory && (
@@ -550,7 +559,9 @@ export default function ApplyPage() {
               </fieldset>
 
               {/* SECTION 5: Category-Specific Questions */}
-              {formData.programCategory && (
+              {(formData.programCategory === "veterans" ||
+                formData.programCategory === "recovery" ||
+                formData.programCategory === "couples") && (
                 <fieldset className="space-y-6">
                   <legend className="text-xl sm:text-2xl font-bold text-at-blue mb-4">
                     Section 5: Category-Specific Questions

@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/og-adventure-therapy.jpg",
-        width: 1200,
-        height: 630,
+        url: "/images/logo-color.png",
+        width: 720,
+        height: 599,
         alt: "Adventure Therapy - Healing Through Nature",
       },
     ],
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: "Adventure Therapy | Healing Through Nature",
     description:
       "Evidence-based outdoor therapy programs combining wilderness experiences with professional mental health support.",
-    images: ["/images/og-adventure-therapy.jpg"],
+    images: ["/images/logo-color.png"],
   },
 }
 
