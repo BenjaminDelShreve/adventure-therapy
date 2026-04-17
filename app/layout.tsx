@@ -15,6 +15,9 @@ const openSans = Open_Sans({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://adventure-therapy.vercel.app')
 
+/** Canonical OG/Twitter preview image (absolute URL for social crawlers). */
+const ogImageUrl = "https://adventuretherapy.co/images/logo-color.png"
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Adventure Therapy | Healing Through Nature",
@@ -45,7 +48,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/logo-color.png",
+        url: ogImageUrl,
         width: 720,
         height: 599,
         alt: "Adventure Therapy - Healing Through Nature",
@@ -57,7 +60,7 @@ export const metadata: Metadata = {
     title: "Adventure Therapy | Healing Through Nature",
     description:
       "Evidence-based outdoor therapy programs combining wilderness experiences with professional mental health support.",
-    images: ["/images/logo-color.png"],
+    images: [ogImageUrl],
   },
 }
 
